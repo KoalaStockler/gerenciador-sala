@@ -1,6 +1,14 @@
 <?php
-
 include './template/header.php';
+
+$scriptConsulta = "SELECT trs.id, ts.identificacao as 'nome_sala', td.nome as 'nome_docente', tt.sigla as 'sigla_turma'
+                    FROM tb_reservas_sala trs
+                    inner join tb_sala ts on trs.sala_id = ts.id
+                    inner join tb_turma tt on trs.turma_id = tt.id
+                    inner join tb_docente td on trs.docente_id = td.id";
+
+$resultados = $conn->query($scriptConsulta)->fetchAll();
+
 ?>
 
 <section class="container vh-100">
@@ -16,39 +24,19 @@ include './template/header.php';
             </tr>
         </thead>
         <tbody>
+            <?php foreach ($resultados as $linha) { ?>
             <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+                <th scope="row"><?= $linha['id'] ?></th>
+                <td><?= $linha['nome_sala'] ?></td>
+                <td><?= $linha['sigla_turma'] ?></td>
+                <td><?= $linha['nome_docente'] ?></td>
                 <td>
                     <a href="#" class="btn btn-danger">
                         <i class="bi bi-trash3-fill"></i>
                     </a>
                 </td>
             </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>
-                    <a href="#" class="btn btn-danger">
-                        <i class="bi bi-trash3-fill"></i>
-                    </a>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td>John</td>
-                <td>Doe</td>
-                <td>@social</td>
-                <td>
-                    <a href="#" class="btn btn-danger">
-                        <i class="bi bi-trash3-fill"></i>
-                    </a>
-                </td>
-            </tr>
+            <?php } ?>
         </tbody>
     </table>
 </section>
